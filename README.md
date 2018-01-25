@@ -1,2 +1,2 @@
-# franciscan-af-api
-The server api for franciscan-af
+# javascript-af-api
+The server api for javascript-af
