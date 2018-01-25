@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-const User = mongoose.model('User');
+const User = mongoose.model('User')
 
 export default {
   Query: {
-    getAllUsers: async () => await User.find()
-  }
-};
+    getAllUsers: async () => await User.find(),
+  },
+}
