@@ -1,5 +1,8 @@
 import d from 'dotenv';
+// Include models here (for mongoose singleton to work)
 import mongoose from 'mongoose';
+import './models/Users';
+
 import app from './app';
 
 d.config({
@@ -17,9 +20,6 @@ mongoose.connection.on('connected', () => {
 mongoose.connection.on('error', e => {
   console.log(`Mongo error -> ${e}`);
 });
-
-// Include models here (for mongoose singleton to work)
-import './models/Users';
 
 const PORT = process.env.PORT || 8080;
 
