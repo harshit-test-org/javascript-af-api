@@ -4,10 +4,13 @@ import mongoose from 'mongoose'
 import path from 'path'
 import cors from 'cors'
 import session from 'express-session'
+import connectMongo from 'connect-mongo'
 import { makeExecutableSchema } from 'graphql-tools'
 import { graphiqlExpress, graphqlExpress } from 'apollo-server-express'
 import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas'
 import authRoutes from './routes/auth'
+
+const MongoStore = connectMongo(session)
 
 const User = mongoose.model('User')
 
@@ -23,7 +26,8 @@ app.use(
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 15552000000 } // 6 months
+    cookie: { maxAge: 15552000000 }, // 6 months
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
   })
 )
 const whitelist = [
