@@ -21,9 +21,9 @@ router.get('/start', (req, res) => {
 router.get('/callback', (req, res) => {
   const { error, code, state } = req.query
   if (error || !code) {
-    return res.redirect('http://localhost:3000')
+    return res.redirect(process.env.FRONT_END)
   }
-  if (state !== GITHUB_STATE) return res.redirect('http://localhost:3000')
+  if (state !== GITHUB_STATE) return res.redirect(process.env.FRONT_END)
   axios
     .post(
       'https://github.com/login/oauth/access_token',
@@ -94,7 +94,7 @@ router.get('/callback', (req, res) => {
         console.log(newUser)
         req.session.user = newUser._id
       }
-      res.redirect('http://localhost:3000/home')
+      res.redirect(`${process.env.FRONT_END}/home`)
     })
 })
 

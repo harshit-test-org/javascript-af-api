@@ -34,8 +34,9 @@ const whitelist = [
   // Allow domains here
   // Remember to add your react site at last
   // Cors will also protect the api
-  'http://localhost:3000'
+  process.env.FRONT_END
 ]
+
 const corsOptions = {
   origin (origin, callback) {
     const originIsWhitelisted = whitelist.indexOf(origin) !== -1
@@ -52,7 +53,7 @@ const schema = makeExecutableSchema({
 app.use(async (req, res, next) => {
   if (req.session.user) {
     try {
-      const user = await User.findById(req.session.user)
+      const user = await User.findById(req.session.user).select('-following')
       req.user = user
     } catch (e) {
       return next()
@@ -68,8 +69,9 @@ function ensureLoggedIn (req, res, next) {
     res.status(403).json({ error: 401, msg: 'Not Authorized' })
   }
 }
-
-app.use(morgan('common'))
+if (process.env.NODE_ENV !== 'production') {
+  app.use(morgan('common'))
+}
 app.get('/me', ensureLoggedIn, (req, res) => {
   const { email, name, photoURL, bio } = req.user
   res.json({
@@ -81,7 +83,7 @@ app.get('/me', ensureLoggedIn, (req, res) => {
 })
 app.get('/logout', (req, res) => {
   delete req.session.user
-  res.redirect('http://localhost:3000')
+  res.redirect(process.env.FRONT_END)
 })
 app.use('/auth/github', authRoutes)
 
@@ -89,8 +91,11 @@ app.use(
   '/graphql',
   ensureLoggedIn,
   express.json(),
-  graphqlExpress(() => ({
-    schema
+  graphqlExpress(req => ({
+    schema,
+    context: {
+      user: req.user
+    }
   }))
 )
 

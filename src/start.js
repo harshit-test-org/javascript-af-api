@@ -2,6 +2,8 @@ import {} from 'dotenv/config'
 // Include models here (for mongoose singleton to work)
 import mongoose from 'mongoose'
 import './models/Users'
+import './models/Posts'
+import './models/Followers'
 import app from './app'
 
 mongoose.Promise = global.Promise
