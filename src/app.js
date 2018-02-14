@@ -2,6 +2,7 @@ import express from 'express'
 import morgan from 'morgan'
 import mongoose from 'mongoose'
 import path from 'path'
+import cors from 'cors'
 import session from 'express-session'
 import { makeExecutableSchema } from 'graphql-tools'
 import { graphiqlExpress, graphqlExpress } from 'apollo-server-express'
@@ -25,6 +26,20 @@ app.use(
     cookie: { maxAge: 15552000000 } // 6 months
   })
 )
+const whitelist = [
+  // Allow domains here
+  // Remember to add your react site at last
+  // Cors will also protect the api
+  'http://localhost:3000'
+]
+const corsOptions = {
+  origin (origin, callback) {
+    const originIsWhitelisted = whitelist.indexOf(origin) !== -1
+    callback(null, originIsWhitelisted)
+  },
+  credentials: true
+}
+app.use(cors(corsOptions))
 const schema = makeExecutableSchema({
   typeDefs,
   resolvers
