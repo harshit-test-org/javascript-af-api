@@ -30,21 +30,13 @@ app.use(
     store: new MongoStore({ mongooseConnection: mongoose.connection })
   })
 )
-const whitelist = [
-  // Allow domains here
-  // Remember to add your react site at last
-  // Cors will also protect the api
-  process.env.FRONT_END
-]
-
-const corsOptions = {
-  origin (origin, callback) {
-    const originIsWhitelisted = whitelist.indexOf(origin) !== -1
-    callback(null, originIsWhitelisted)
-  },
+const corsMW = cors({
+  origin: process.env.FRONT_END,
   credentials: true
-}
-app.use(cors(corsOptions))
+})
+
+app.use(corsMW)
+app.options('*', corsMW)
 const schema = makeExecutableSchema({
   typeDefs,
   resolvers
