@@ -12,6 +12,9 @@
     "test": "mocha",
     "dev": "nodemon --exec babel-node src/start.js"
   },
+  "engines": {
+    "node": "> 8"
+  },
   "dependencies": {
     "apollo-server-express": "^1.3.2",
     "axios": "^0.17.1",
