@@ -45,7 +45,7 @@ const schema = makeExecutableSchema({
 app.use(async (req, res, next) => {
   if (req.session.user) {
     try {
-      const user = await User.findById(req.session.user).select('-following')
+      const user = await User.findById(req.session.user)
       req.user = user
     } catch (e) {
       return next()
@@ -65,8 +65,9 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('common'))
 }
 app.get('/me', ensureLoggedIn, (req, res) => {
-  const { email, name, photoURL, bio } = req.user
+  const { email, name, photoURL, bio, _id } = req.user
   res.json({
+    _id,
     email,
     name,
     photoURL,

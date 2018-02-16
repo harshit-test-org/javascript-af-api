@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+const Post = mongoose.model('Post')
 const Follower = mongoose.model('Follower')
 
 export default {
@@ -44,6 +45,24 @@ export default {
       ]
       const res = await Follower.aggregate(q).limit(10)
       return res
+    }
+  },
+  Mutation: {
+    async setPost (_, { authorId, text }) {
+      try {
+        await Post.create({
+          authorId,
+          text
+        })
+        return {
+          ok: true
+        }
+      } catch (er) {
+        return {
+          ok: 'false',
+          message: er.message
+        }
+      }
     }
   }
 }
