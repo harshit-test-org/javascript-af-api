@@ -4,6 +4,7 @@ export default `
     getUserById(id:ID!): User!
   },
   type User {
+    _id: String!,
     email:String!,
     name: String!,
     photoURL: String!,

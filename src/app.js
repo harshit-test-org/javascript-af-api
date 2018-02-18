@@ -21,15 +21,14 @@ const resolvers = mergeResolvers(
 )
 
 const app = express()
-app.use(
-  session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 15552000000 }, // 6 months
-    store: new MongoStore({ mongooseConnection: mongoose.connection })
-  })
-)
+export const sessionParser = session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 15552000000 }, // 6 months
+  store: new MongoStore({ mongooseConnection: mongoose.connection })
+})
+app.use(sessionParser)
 const corsMW = cors({
   origin: process.env.FRONT_END,
   credentials: true
@@ -37,7 +36,7 @@ const corsMW = cors({
 
 app.use(corsMW)
 app.options('*', corsMW)
-const schema = makeExecutableSchema({
+export const schema = makeExecutableSchema({
   typeDefs,
   resolvers
 })
@@ -82,7 +81,7 @@ app.use('/auth/github', authRoutes)
 
 app.use(
   '/graphql',
-  ensureLoggedIn,
+  // ensureLoggedIn,
   express.json(),
   graphqlExpress(req => ({
     schema,
@@ -95,7 +94,8 @@ app.use(
 app.use(
   '/graphiql',
   graphiqlExpress({
-    endpointURL: '/graphql'
+    endpointURL: '/graphql',
+    subscriptionsEndpoint: 'ws://localhost:8080/subscriptions'
   })
 )
 
