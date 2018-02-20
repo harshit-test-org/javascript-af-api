@@ -81,7 +81,7 @@ app.use('/auth/github', authRoutes)
 
 app.use(
   '/graphql',
-  // ensureLoggedIn,
+  ensureLoggedIn,
   express.json(),
   graphqlExpress(req => ({
     schema,

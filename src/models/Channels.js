@@ -7,8 +7,8 @@ const ChannelSchema = new Schema({
     type: Date,
     default: Date.now()
   },
-  public: { type: Boolean, default: true },
-  admins: [mongoose.Schema.Types.ObjectId]
+  imageURL: String,
+  public: { type: Boolean, default: true }
 })
 
 mongoose.model('Channel', ChannelSchema)

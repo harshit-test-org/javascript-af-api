@@ -7,6 +7,59 @@ const Message = mongoose.model('Message')
 const Channel = mongoose.model('Channel')
 
 export default {
+  Query: {
+    getUserChannels: async (_, args, { user }) => {
+      // Get all user channels
+      const q = [
+        {
+          $match: {
+            member: user._id
+          }
+        },
+        {
+          $lookup: {
+            from: 'channels',
+            localField: 'channel',
+            foreignField: '_id',
+            as: 'channel'
+          }
+        },
+        { $project: { _id: 0, channel: 1 } },
+        { $unwind: '$channel' },
+        {
+          //  [{channel:....},{channel:....}]
+          $facet: {
+            dms: [
+              {
+                $match: {
+                  'channel.public': false
+                }
+              },
+              {
+                $replaceRoot: {
+                  newRoot: '$channel'
+                }
+              }
+            ],
+            global: [
+              {
+                $match: {
+                  'channel.public': true
+                }
+              },
+              {
+                $replaceRoot: {
+                  newRoot: '$channel'
+                }
+              }
+            ]
+          }
+        }
+      ]
+      const result = await ChannelMember.aggregate(q)
+      return result[0]
+    }
+  },
   Subscription: {
     msg: {
       resolve: async (payload, args, { currentUser }) => {

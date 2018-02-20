@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
-const MessagessSchema = new Schema({
+const MessagesSchema = new Schema({
   channelId: {
     type: Schema.Types.ObjectId,
     ref: 'Channels'
@@ -13,4 +13,4 @@ const MessagessSchema = new Schema({
   }
 })
 
-mongoose.model('Message', MessagessSchema)
+mongoose.model('Message', MessagesSchema)
