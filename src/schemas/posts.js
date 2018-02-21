@@ -9,7 +9,7 @@ export default `
     _id: ID!,
     text: String!,
     authorId: ID!,
-    created_at: String!,
+    createdAt: String!,
     author: User!
   }
   type SetPostResponse {

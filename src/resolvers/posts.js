@@ -51,7 +51,7 @@ export default {
         },
         {
           $sort: {
-            created_at: -1
+            createdAt: -1
           }
         }
       ]

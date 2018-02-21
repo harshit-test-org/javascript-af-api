@@ -5,7 +5,6 @@ export default `
   },
   type User {
     _id: String!,
-    email:String!,
     name: String!,
     photoURL: String!,
     bio: String!

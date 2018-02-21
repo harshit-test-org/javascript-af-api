@@ -4,11 +4,14 @@ export default `
   }
   type Query {
     getUserChannels: Channels!
+    getMessages(channelId: ID! offset:Int): [Message!]
   }
   type Message {
+    _id: ID!
     channelId: ID!
     text: String!
-    created_at: String!
+    createdAt: String!
+    author: User!
   }
   type Mutation {
     createMessage(text: String!, channelId:ID!): Message!

@@ -1,16 +1,23 @@
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
-const MessagesSchema = new Schema({
-  channelId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Channels'
+const MessagesSchema = new Schema(
+  {
+    channelId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Channel'
+    },
+    text: String,
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }
   },
-  text: String,
-  created_at: {
-    type: Date,
-    default: Date.now()
+  {
+    timestamps: {
+      createdAt: true
+    }
   }
-})
+)
 
 mongoose.model('Message', MessagesSchema)

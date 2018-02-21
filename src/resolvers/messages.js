@@ -58,6 +58,39 @@ export default {
       ]
       const result = await ChannelMember.aggregate(q)
       return result[0]
+    },
+    getMessages: async (_, { channelId, offset = 1 }, { user }) => {
+      try {
+        const { _id } = user
+        const channelPromise = Channel.findById(channelId)
+        const channelMemberPromise = ChannelMember.findOne({
+          member: _id,
+          channel: channelId
+        })
+        const [channelRes, channelMemberRes] = await Promise.all([
+          channelPromise,
+          channelMemberPromise
+        ])
+        if (channelMemberRes || (channelRes && channelRes.public)) {
+          // HE is in the channel lets make a message
+          const limit = 10
+          const skip = offset * limit - limit
+          const result = await Message.find({
+            channelId
+          })
+            .skip(skip)
+            .sort({
+              createdAt: -1
+            })
+            .limit(limit)
+            .populate('author')
+          return result
+        } else {
+          return new Error('You are not a member of this channel')
+        }
+      } catch (e) {
+        throw e
+      }
     }
   },
   Subscription: {
@@ -107,9 +140,17 @@ export default {
           // HE is in the channel lets make a message
           const newMessage = {
             text,
-            channelId
+            channelId,
+            author: user.id
           }
-          const result = await Message.create(newMessage)
+          let result = await Message.create(newMessage)
+          result = result.toObject()
+          result.author = {
+            _id: user._id,
+            photoURL: user.photoURL,
+            name: user.name,
+            bio: user.bio
+          }
           pubSub.publish('NEW_MSG', result)
           return result
         } else {
