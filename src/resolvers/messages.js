@@ -84,7 +84,7 @@ export default {
             })
             .limit(limit)
             .populate('author')
-          return result
+          return result.reverse()
         } else {
           return new Error('You are not a member of this channel')
         }
