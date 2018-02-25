@@ -1,6 +1,7 @@
 import express from 'express'
 import axios from 'axios'
 import mongoose from 'mongoose'
+import client from '../algolia'
 
 const User = mongoose.model('User')
 
@@ -10,6 +11,8 @@ const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET
 const GITHUB_STATE = process.env.GITHUB_STATE
 const SERVER_HOST = process.env.SERVER_HOST
+
+const index = client.initIndex('users')
 
 router.get('/start', (req, res) => {
   const url = encodeURI(
@@ -91,7 +94,13 @@ router.get('/callback', (req, res) => {
           token,
           email: userInfo[0].email
         })
-        console.log(newUser)
+        index.saveObject({
+          name: newUser.name,
+          bio: newUser.bio,
+          photoURL: newUser.photoURL,
+          email: newUser.email,
+          objectID: newUser._id
+        })
         req.session.user = newUser._id
       }
       res.redirect(`${process.env.FRONT_END}/home`)
