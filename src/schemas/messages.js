@@ -8,13 +8,14 @@ export default `
   }
   type Message {
     _id: ID!
+    uid: ID
     channelId: ID!
     text: String!
     createdAt: String!
     author: User!
   }
   type Mutation {
-    createMessage(text: String!, channelId:ID!): Message!
+    createMessage(text: String!, channelId:ID!, uid: ID!): Message!
   }
   type Channels{
     global: [Channel],

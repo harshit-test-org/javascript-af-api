@@ -124,7 +124,7 @@ export default {
     }
   },
   Mutation: {
-    createMessage: async (_, { channelId, text }, { user }) => {
+    createMessage: async (_, { channelId, text, uid }, { user }) => {
       try {
         const { _id } = user
         const channelPromise = Channel.findById(channelId)
@@ -151,6 +151,7 @@ export default {
             name: user.name,
             bio: user.bio
           }
+          result.uid = uid
           pubSub.publish('NEW_MSG', result)
           return result
         } else {
