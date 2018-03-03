@@ -10,6 +10,7 @@ import './models/Followers'
 import './models/Messages'
 import './models/ChannelMembers'
 import './models/Channels'
+import './models/Repos'
 import app, { schema, sessionParser } from './app'
 
 mongoose.Promise = global.Promise

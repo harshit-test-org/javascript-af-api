@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import client from '../algolia'
 
 const User = mongoose.model('User')
+const Repo = mongoose.model('Repo')
 
 const router = express.Router()
 
@@ -94,6 +95,15 @@ router.get('/callback', (req, res) => {
           token,
           email: userInfo[0].email
         })
+        const userRepos = info.data.viewer.pinnedRepositories.edges.map(
+          item => ({
+            name: item.node.name,
+            description: item.node.description,
+            imageURL: info.data.viewer.avatarUrl,
+            owner: newUser._id
+          })
+        )
+        await Repo.insertMany(userRepos)
         index.saveObject({
           name: newUser.name,
           bio: newUser.bio,

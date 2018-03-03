@@ -4,18 +4,6 @@ const Post = mongoose.model('Post')
 const Follower = mongoose.model('Follower')
 
 export default {
-  // Subscription: {
-  //   msg: {
-  //     resolve: (payload, args, context, info) => {},
-  //     subscribe: withFilter(
-  //       () => pubsub.asyncIterator('NEW_MSG'),
-  //       (payload, variables) => {
-  //         console.log(payload, variables)
-  //         return true
-  //       }
-  //     )
-  //   }
-  // },
   Query: {
     getFeed: async (_, args, { user }) => {
       const q = [
