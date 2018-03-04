@@ -12,4 +12,8 @@ const ChannelSchema = new Schema(
   }
 )
 
+ChannelSchema.index({
+  name: 'text'
+})
+
 mongoose.model('Channel', ChannelSchema)

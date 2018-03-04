@@ -8,6 +8,24 @@ const Channel = mongoose.model('Channel')
 
 export default {
   Query: {
+    searchChannels: async (_, { q, dm }, { user }) => {
+      if (dm) {
+        // dd
+      } else {
+        console.log(q, dm)
+        const res = await Channel.find({
+          $and: [
+            { public: true },
+            {
+              $text: {
+                $search: q
+              }
+            }
+          ]
+        })
+        return res
+      }
+    },
     getUserChannels: async (_, args, { user }) => {
       // Get all user channels
       const q = [

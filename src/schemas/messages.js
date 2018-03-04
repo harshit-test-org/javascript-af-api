@@ -5,6 +5,7 @@ export default `
   type Query {
     getUserChannels: Channels!
     getMessages(channelId: ID! offset:Int): [Message!]
+    searchChannels(q: String!, dm: Boolean!): [Channel!]
   }
   type Message {
     _id: ID!
