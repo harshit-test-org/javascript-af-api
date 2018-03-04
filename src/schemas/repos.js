@@ -7,6 +7,6 @@ export default `
     name: String!
     imageURL: String!
     _id: ID!
-    description: String!
+    description: String
   }
 `
