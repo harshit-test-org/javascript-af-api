@@ -19,8 +19,9 @@ export default {
                 repositories(orderBy: {field: STARGAZERS, direction: DESC},first:10) {
                     nodes {
                       name
+                      nameWithOwner
                       id
-                      descriptionHTML
+                      description
                       stargazers{
                         totalCount
                       }
@@ -36,11 +37,13 @@ export default {
           }
         }
       )
+      console.log(repos)
       return repos.data.viewer.repositories.nodes.map(item => ({
         owner: user,
         name: item.name,
-        description: item.descriptionHTML,
-        starCount: item.starCount,
+        nameWithOwner: item.nameWithOwner,
+        description: item.description,
+        starCount: item.stargazers.totalCount,
         imageURL: user.photoURL,
         _id: item.id
       }))

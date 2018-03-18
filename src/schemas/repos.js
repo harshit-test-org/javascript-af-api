@@ -5,6 +5,7 @@ export default `
   type Repo {
     owner: User!
     name: String!
+    nameWithOwner: String!
     imageURL: String
     _id: ID
     description: String
