@@ -1,6 +1,7 @@
 import express from 'express'
 import axios from 'axios'
 import mongoose from 'mongoose'
+import graphql from '../lib/graphql'
 import client from '../algolia'
 
 const User = mongoose.model('User')
@@ -60,34 +61,29 @@ router.get('/callback', (req, res) => {
         //  create session ....
         req.session.user = existingUser._id
       } else {
-        const { data: info } = await axios.post(
-          'https://api.github.com/graphql',
-          {
-            query: `
-        {
-          viewer {
-            pinnedRepositories(first: 6) {
-              edges {
-                node {
+        const { data: info } = await graphql({
+          query: `
+              {
+                viewer {
+                  pinnedRepositories(first: 6) {
+                    edges {
+                      node {
+                        name
+                        url
+                        description
+                      }
+                    }
+                  }
                   name
-                  url
-                  description
+                  bio
+                  avatarUrl
                 }
               }
-            }
-            name
-            bio
-            avatarUrl
+              `,
+          headers: {
+            Authorization: `bearer ${token}`
           }
-        }
-        `
-          },
-          {
-            headers: {
-              Authorization: `bearer ${token}`
-            }
-          }
-        )
+        })
         const newUser = await User.create({
           name: info.data.viewer.name,
           bio: info.data.viewer.bio,

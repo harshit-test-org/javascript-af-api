@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import axios from 'axios'
+import graphql from '../lib/graphql'
 
 const User = mongoose.model('User')
 
@@ -10,10 +10,8 @@ export default {
       return user
     },
     getUserGithubRepos: async (_, args, { user }) => {
-      const { data: repos } = await axios.post(
-        'https://api.github.com/graphql',
-        {
-          query: `
+      const { data: repos } = await graphql({
+        query: `
             {
               viewer {
                 repositories(orderBy: {field: STARGAZERS, direction: DESC},first:10) {
@@ -29,14 +27,11 @@ export default {
                 }
               }
             }
-        `
-        },
-        {
-          headers: {
-            Authorization: `bearer ${user.token}`
-          }
+        `,
+        headers: {
+          Authorization: `bearer ${user.token}`
         }
-      )
+      })
       console.log(repos)
       return repos.data.viewer.repositories.nodes.map(item => ({
         owner: user,
