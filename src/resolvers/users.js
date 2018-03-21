@@ -19,6 +19,7 @@ export default {
                       name
                       nameWithOwner
                       id
+                      url
                       description
                       stargazers{
                         totalCount
@@ -36,6 +37,7 @@ export default {
       return repos.data.viewer.repositories.nodes.map(item => ({
         owner: user,
         name: item.name,
+        url: item.url,
         nameWithOwner: item.nameWithOwner,
         description: item.description,
         starCount: item.stargazers.totalCount,

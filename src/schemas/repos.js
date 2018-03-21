@@ -6,6 +6,7 @@ export default `
     owner: User!
     name: String!
     nameWithOwner: String!
+    url: String
     imageURL: String
     _id: ID
     description: String
