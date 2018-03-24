@@ -6,6 +6,7 @@ export default `
   },
   type User {
     _id: String!,
+    username: String!,
     name: String!,
     photoURL: String!,
     bio: String!

@@ -4,6 +4,8 @@ const Schema = mongoose.Schema
 const RepoSchema = new Schema(
   {
     name: String,
+    nameWithOwner: String,
+    url: String,
     imageURL: String,
     description: String,
     owner: {

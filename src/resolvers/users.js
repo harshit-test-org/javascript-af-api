@@ -33,7 +33,6 @@ export default {
           Authorization: `bearer ${user.token}`
         }
       })
-      console.log(repos)
       return repos.data.viewer.repositories.nodes.map(item => ({
         owner: user,
         name: item.name,
