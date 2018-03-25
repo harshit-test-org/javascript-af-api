@@ -8,6 +8,7 @@ const RepoSchema = new Schema(
     url: String,
     imageURL: String,
     description: String,
+    starCount: Number,
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'User'
