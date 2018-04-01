@@ -10,9 +10,10 @@ export default `
     name: String!
     nameWithOwner: String
     url: String
-    imageURL: String
+    image: String
     _id: ID
     description: String
     starCount: Int
+    posted: String
   }
 `

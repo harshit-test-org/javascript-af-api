@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { distanceInWordsToNow } from 'date-fns'
 const Schema = mongoose.Schema
 
 const RepoSchema = new Schema(
@@ -21,6 +22,17 @@ const RepoSchema = new Schema(
 
 RepoSchema.pre('find', function () {
   this.populate('owner')
+})
+
+RepoSchema.virtual('posted').get(function () {
+  return distanceInWordsToNow(this.createdAt, {
+    addSuffix: true
+  })
+})
+RepoSchema.virtual('image').get(function () {
+  if (this.imageURL) {
+    return this.imageURL + '&s=50'
+  }
 })
 
 mongoose.model('Repo', RepoSchema)

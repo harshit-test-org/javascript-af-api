@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import gitql from '../lib/graphql'
+
 const Repos = mongoose.model('Repo')
 
 export default {
