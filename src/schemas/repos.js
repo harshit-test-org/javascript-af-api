@@ -1,6 +1,6 @@
 export default `
   type Query {
-    getRepos: [Repo!]
+    getRepos(page:Int): [Repo!]
   }
   type Mutation {
     createRepository(name:String!, nameWithOwner: String!, description: String!): Repo!

@@ -5,8 +5,15 @@ const Repos = mongoose.model('Repo')
 
 export default {
   Query: {
-    getRepos: async () => {
+    getRepos: async (_, { page = 1 }) => {
+      const limit = 15
+      const skip = page * limit - limit
+      console.log(skip, page)
       const repos = await Repos.find()
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: 'desc' })
+
       return repos
     }
   },
