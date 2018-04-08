@@ -63,7 +63,7 @@ function ensureLoggedIn (req, res, next) {
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('common'))
 }
-app.get('/me', ensureLoggedIn, (req, res) => {
+app.get('/api/me', ensureLoggedIn, (req, res) => {
   const { email, name, photoURL, bio, _id } = req.user
   res.json({
     _id,
@@ -73,14 +73,14 @@ app.get('/me', ensureLoggedIn, (req, res) => {
     bio
   })
 })
-app.get('/logout', (req, res) => {
+app.get('/api/logout', (req, res) => {
   delete req.session.user
   res.redirect(process.env.FRONT_END)
 })
-app.use('/auth/github', authRoutes)
+app.use('/api/auth/github', authRoutes)
 
 app.use(
-  '/graphql',
+  '/api/graphql',
   ensureLoggedIn,
   express.json(),
   graphqlExpress(req => ({
@@ -92,7 +92,7 @@ app.use(
 )
 
 app.use(
-  '/graphiql',
+  '/api/graphiql',
   graphiqlExpress({
     endpointURL: '/graphql',
     subscriptionsEndpoint: 'ws://localhost:8080/subscriptions'
