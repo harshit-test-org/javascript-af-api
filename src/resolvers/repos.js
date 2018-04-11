@@ -1,9 +1,34 @@
 import mongoose from 'mongoose'
 import gitql from '../lib/graphql'
+import md from '../lib/markdown'
 
 const Repos = mongoose.model('Repo')
 
 export default {
+  Repo: {
+    readme: async ({ nameWithOwner }, _, { user }) => {
+      const [repoOwner, repoName] = nameWithOwner.split('/')
+      const {
+        data: { data: { repository: { object: { text } } } }
+      } = await gitql({
+        query: `
+        {
+          repository(name: "${repoName}", owner: "${repoOwner}") {
+            object(expression: "master:README.md") {
+              ... on Blob {
+                text
+              }
+            }
+          }
+        }
+        `,
+        headers: {
+          Authorization: `bearer ${user.token}`
+        }
+      })
+      return md(text)
+    }
+  },
   Query: {
     getRepos: async (_, { page = 1 }) => {
       const limit = 15
@@ -15,6 +40,10 @@ export default {
         .sort({ createdAt: 'desc' })
 
       return repos
+    },
+    getRepo: async (_, { id }) => {
+      const data = await Repos.findById(id)
+      return data
     }
   },
   Mutation: {

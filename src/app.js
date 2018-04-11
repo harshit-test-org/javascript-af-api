@@ -6,7 +6,8 @@ import cors from 'cors'
 import session from 'express-session'
 import connectMongo from 'connect-mongo'
 import { makeExecutableSchema } from 'graphql-tools'
-import { graphiqlExpress, graphqlExpress } from 'apollo-server-express'
+import { graphqlExpress } from 'apollo-server-express'
+import { altairExpress } from 'altair-express-middleware'
 import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas'
 import authRoutes from './routes/auth'
 
@@ -21,13 +22,20 @@ const resolvers = mergeResolvers(
 )
 
 const app = express()
+
 export const sessionParser = session({
+  name: 'ssid',
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 15552000000 }, // 6 months
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 15552000000
+  }, // 6 months
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 })
+
 app.use(sessionParser)
 const corsMW = cors({
   origin: process.env.FRONT_END,
@@ -93,9 +101,9 @@ app.use(
 
 app.use(
   '/api/graphiql',
-  graphiqlExpress({
-    endpointURL: '/graphql',
-    subscriptionsEndpoint: 'ws://localhost:8080/subscriptions'
+  altairExpress({
+    endpointURL: '/api/graphql',
+    subscriptionsEndpoint: `ws://localhost:8080/api/subscriptions`
   })
 )
 

@@ -56,7 +56,7 @@ server.listen(PORT, () => {
     },
     {
       server: server,
-      path: '/subscriptions',
+      path: '/api/subscriptions',
       verifyClient: (info, done) => {
         sessionParser(info.req, {}, () => {
           done(info.req.session)
