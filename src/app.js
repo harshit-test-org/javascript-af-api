@@ -22,15 +22,15 @@ const resolvers = mergeResolvers(
 )
 
 const app = express()
-
+app.set('trust proxy', 1)
 export const sessionParser = session({
   name: 'ssid',
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
     maxAge: 15552000000
   }, // 6 months
   store: new MongoStore({ mongooseConnection: mongoose.connection })

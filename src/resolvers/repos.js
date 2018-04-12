@@ -33,7 +33,6 @@ export default {
     getRepos: async (_, { page = 1 }) => {
       const limit = 25
       const skip = page * limit - limit
-      console.log(skip, page)
       const repos = await Repos.find()
         .skip(skip)
         .limit(limit)
