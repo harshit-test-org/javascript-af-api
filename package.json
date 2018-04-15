@@ -7,13 +7,13 @@
     "dev": "nodemon --exec babel-node src/start.js",
     "build": "babel src/ -d dist/",
     "prebuild": "rm -rf dist/",
-    "format": "prettier --trailing-comma es5 --no-semi --single-quote --write \"src/**/*.js\"",
+    "format":
+      "prettier --trailing-comma es5 --no-semi --single-quote --write \"src/**/*.js\"",
     "precommit": "lint-staged && mocha",
     "test": "mocha "
   },
   "dependencies": {
     "algoliasearch": "^3.24.11",
-    "altair-express-middleware": "^1.0.1",
     "apollo-server-express": "^1.3.2",
     "axios": "^0.17.1",
     "connect-mongo": "^2.0.1",

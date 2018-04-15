@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import gitql from '../lib/graphql'
-import md from '../lib/markdown'
+import axios from 'axios'
 
 const Repos = mongoose.model('Repo')
 
@@ -8,25 +8,20 @@ export default {
   Repo: {
     readme: async ({ nameWithOwner }, _, { user }) => {
       const [repoOwner, repoName] = nameWithOwner.split('/')
-      const {
-        data: { data: { repository: { object: { text } } } }
-      } = await gitql({
-        query: `
-        {
-          repository(name: "${repoName}", owner: "${repoOwner}") {
-            object(expression: "master:README.md") {
-              ... on Blob {
-                text
-              }
+      try {
+        const { data } = await axios.get(
+          `https://api.github.com/repos/${repoOwner}/${repoName}/readme`,
+          {
+            headers: {
+              Accept: 'application/vnd.github.VERSION.html',
+              Authorization: `Bearer ${user.token}`
             }
           }
-        }
-        `,
-        headers: {
-          Authorization: `bearer ${user.token}`
-        }
-      })
-      return md(text)
+        )
+        return data
+      } catch (e) {
+        return null
+      }
     }
   },
   Query: {

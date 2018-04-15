@@ -6,8 +6,7 @@ import cors from 'cors'
 import session from 'express-session'
 import connectMongo from 'connect-mongo'
 import { makeExecutableSchema } from 'graphql-tools'
-import { graphqlExpress } from 'apollo-server-express'
-import { altairExpress } from 'altair-express-middleware'
+import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas'
 import authRoutes from './routes/auth'
 
@@ -24,8 +23,8 @@ const resolvers = mergeResolvers(
 const app = express()
 app.set('trust proxy', 1)
 export const sessionParser = session({
-  name: 'ssid',
-  secret: 'keyboard cat',
+  secret: process.env.SECRET,
+  name: 'sid',
   resave: false,
   saveUninitialized: false,
   cookie: {
@@ -68,9 +67,8 @@ function ensureLoggedIn (req, res, next) {
     res.status(403).json({ error: 401, msg: 'Not Authorized' })
   }
 }
-if (process.env.NODE_ENV !== 'production') {
-  app.use(morgan('common'))
-}
+app.use(morgan('combined'))
+
 app.get('/api/me', ensureLoggedIn, (req, res) => {
   const { email, name, photoURL, bio, _id } = req.user
   res.json({
@@ -99,11 +97,12 @@ app.use(
   }))
 )
 
-app.use(
+app.get(
   '/api/graphiql',
-  altairExpress({
+  graphiqlExpress({
     endpointURL: '/api/graphql',
-    subscriptionsEndpoint: `ws://localhost:8080/api/subscriptions`
+    subscriptionsEndpoint: `ws://localhost:8080/api/subscriptions`,
+    editorTheme: 'material'
   })
 )
 

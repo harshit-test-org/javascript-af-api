@@ -1,3 +1,6 @@
+// Originally this was parsing the github readme from the github v4 api
+// But I finally decided to move ahead and grab parsed readme from v3
+// But this may be useful to parse markdown in other places in the futher
 import marked from 'marked'
 import xss from 'xss'
 import hljs from 'highlight.js'
