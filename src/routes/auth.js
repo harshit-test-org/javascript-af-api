@@ -109,7 +109,7 @@ router.get('/callback', (req, res) => {
         })
         req.session.user = newUser._id
       }
-      res.redirect(`${process.env.FRONT_END}/home`)
+      res.redirect(`${process.env.FRONT_END}`)
     })
 })
 
