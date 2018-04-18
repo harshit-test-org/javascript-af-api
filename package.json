@@ -2,11 +2,18 @@
   "name": "javascript-af-api",
   "version": "0.0.1",
   "main": "start.js",
+  "now": {
+    "name": "jsapi",
+    "alias": "jsapi",
+    "public": true,
+    "dotenv": ".env.now"
+  },
   "scripts": {
     "start": "NODE_ENV=production node dist/start.js",
     "dev": "nodemon --exec babel-node src/start.js",
     "build": "babel src/ -d dist/",
     "prebuild": "rm -rf dist/",
+    "deploy": "now --regions bru1 && now alias",
     "format":
       "prettier --trailing-comma es5 --no-semi --single-quote --write \"src/**/*.js\"",
     "precommit": "lint-staged && mocha",
