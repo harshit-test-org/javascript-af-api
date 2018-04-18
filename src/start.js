@@ -37,10 +37,7 @@ server.listen(PORT, () => {
       execute,
       subscribe,
       onConnect: async (conn, webSocket) => {
-        if (
-          !webSocket.upgradeReq.session ||
-          !webSocket.upgradeReq.session.user
-        ) {
+        if (!webSocket.upgradeReq.session || !webSocket.upgradeReq.session.user) {
           throw new Error('Not Authenticated')
         }
         try {

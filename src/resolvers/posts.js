@@ -48,7 +48,7 @@ export default {
     }
   },
   Mutation: {
-    async setPost (_, { authorId, text }) {
+    async setPost(_, { authorId, text }) {
       try {
         await Post.create({
           authorId,

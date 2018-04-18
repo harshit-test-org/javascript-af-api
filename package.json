@@ -7,8 +7,7 @@
     "dev": "nodemon --exec babel-node src/start.js",
     "build": "babel src/ -d dist/",
     "prebuild": "rm -rf dist/",
-    "format":
-      "prettier --trailing-comma es5 --no-semi --single-quote --write \"src/**/*.js\"",
+    "format": "prettier --trailing-comma es5 --no-semi --single-quote --write \"src/**/*.js\"",
     "precommit": "lint-staged && mocha",
     "test": "mocha "
   },
@@ -20,6 +19,8 @@
     "cors": "^2.8.4",
     "date-fns": "^1.29.0",
     "dotenv": "^5.0.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "graphql": "^0.13.0",
@@ -56,7 +57,6 @@
   "license": "MIT",
   "lint-staged": {
     "*.js": [
-      "prettier --trailing-comma es5 --no-semi --single-quote --write",
       "eslint --fix",
       "git add"
     ]

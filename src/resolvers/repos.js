@@ -9,15 +9,12 @@ export default {
     readme: async ({ nameWithOwner }, _, { user }) => {
       const [repoOwner, repoName] = nameWithOwner.split('/')
       try {
-        const { data } = await axios.get(
-          `https://api.github.com/repos/${repoOwner}/${repoName}/readme`,
-          {
-            headers: {
-              Accept: 'application/vnd.github.VERSION.html',
-              Authorization: `Bearer ${user.token}`
-            }
+        const { data } = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/readme`, {
+          headers: {
+            Accept: 'application/vnd.github.VERSION.html',
+            Authorization: `Bearer ${user.token}`
           }
-        )
+        })
         return data
       } catch (e) {
         return null
@@ -41,11 +38,7 @@ export default {
     }
   },
   Mutation: {
-    createRepository: async (
-      _,
-      { name, nameWithOwner, description },
-      { user }
-    ) => {
+    createRepository: async (_, { name, nameWithOwner, description }, { user }) => {
       const [repoOwner, repoName] = nameWithOwner.split('/')
       const { data: { data: { repository } } } = await gitql({
         query: `

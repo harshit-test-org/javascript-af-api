@@ -16,9 +16,7 @@ const User = mongoose.model('User')
 
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './schemas')))
 
-const resolvers = mergeResolvers(
-  fileLoader(path.join(__dirname, './resolvers'))
-)
+const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './resolvers')))
 
 const app = express()
 app.set('trust proxy', 1)
@@ -60,7 +58,7 @@ app.use(async (req, res, next) => {
   return next()
 })
 
-function ensureLoggedIn (req, res, next) {
+function ensureLoggedIn(req, res, next) {
   if (req.user) {
     next()
   } else {

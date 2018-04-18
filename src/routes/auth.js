@@ -45,9 +45,7 @@ router.get('/callback', (req, res) => {
     )
     .then(async response => {
       const token = response.data.access_token
-      const { data: userInfo } = await axios.get(
-        'https://api.github.com/user/emails?access_token=' + token
-      )
+      const { data: userInfo } = await axios.get('https://api.github.com/user/emails?access_token=' + token)
       const existingUser = await User.findOne({ email: userInfo[0].email })
       if (existingUser) {
         await User.update(
@@ -91,14 +89,12 @@ router.get('/callback', (req, res) => {
           token,
           email: userInfo[0].email
         })
-        const userRepos = info.data.viewer.pinnedRepositories.edges.map(
-          item => ({
-            name: item.node.name,
-            description: item.node.description,
-            imageURL: info.data.viewer.avatarUrl,
-            owner: newUser._id
-          })
-        )
+        const userRepos = info.data.viewer.pinnedRepositories.edges.map(item => ({
+          name: item.node.name,
+          description: item.node.description,
+          imageURL: info.data.viewer.avatarUrl,
+          owner: newUser._id
+        }))
         await Repo.insertMany(userRepos)
         index.saveObject({
           name: newUser.name,

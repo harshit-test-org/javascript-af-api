@@ -20,16 +20,16 @@ const RepoSchema = new Schema(
   }
 )
 
-RepoSchema.pre('find', function () {
+RepoSchema.pre('find', function() {
   this.populate('owner')
 })
 
-RepoSchema.virtual('posted').get(function () {
+RepoSchema.virtual('posted').get(function() {
   return distanceInWordsToNow(this.createdAt, {
     addSuffix: true
   })
 })
-RepoSchema.virtual('image').get(function () {
+RepoSchema.virtual('image').get(function() {
   if (this.imageURL) {
     return this.imageURL + '&s=50'
   }

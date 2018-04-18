@@ -7,21 +7,17 @@ import hljs from 'highlight.js'
 
 const renderer = new marked.Renderer()
 
-renderer.code = function (code, lang) {
+renderer.code = function(code, lang) {
   if (lang && hljs.getLanguage(lang)) {
     try {
       const prepared = hljs.highlight(lang, code)
-      return `<pre><code class="hljs ${prepared.language}">${
-        prepared.value
-      }</code></pre>`
+      return `<pre><code class="hljs ${prepared.language}">${prepared.value}</code></pre>`
     } catch (err) {}
   }
 
   try {
     const prepared = hljs.highlightAuto(code)
-    return `<pre><code class="hljs ${prepared.language}">${
-      prepared.value
-    }</code></pre>`
+    return `<pre><code class="hljs ${prepared.language}">${prepared.value}</code></pre>`
   } catch (err) {}
 
   return `<pre><code>${code}</code></pre>`

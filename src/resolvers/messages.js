@@ -85,10 +85,7 @@ export default {
           member: _id,
           channel: channelId
         })
-        const [channelRes, channelMemberRes] = await Promise.all([
-          channelPromise,
-          channelMemberPromise
-        ])
+        const [channelRes, channelMemberRes] = await Promise.all([channelPromise, channelMemberPromise])
         if (channelMemberRes || (channelRes && channelRes.public)) {
           // HE is in the channel lets make a message
           const limit = 10
@@ -120,10 +117,7 @@ export default {
             member: currentUser._id,
             channel: payload.channelId
           })
-          const [channelRes, channelMemberRes] = await Promise.all([
-            channelPromise,
-            channelMemberPromise
-          ])
+          const [channelRes, channelMemberRes] = await Promise.all([channelPromise, channelMemberPromise])
           if (channelMemberRes || (channelRes && channelRes.public)) {
             return payload
           } else {
@@ -150,10 +144,7 @@ export default {
           member: _id,
           channel: channelId
         })
-        const [channelRes, channelMemberRes] = await Promise.all([
-          channelPromise,
-          channelMemberPromise
-        ])
+        const [channelRes, channelMemberRes] = await Promise.all([channelPromise, channelMemberPromise])
         if (channelMemberRes || (channelRes && channelRes.public)) {
           // HE is in the channel lets make a message
           const newMessage = {
