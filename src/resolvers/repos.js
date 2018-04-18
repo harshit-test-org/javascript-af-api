@@ -1,21 +1,27 @@
 import mongoose from 'mongoose'
 import gitql from '../lib/graphql'
 import axios from 'axios'
+import md from '../lib/markdown'
 
 const Repos = mongoose.model('Repo')
 
 export default {
   Repo: {
-    readme: async ({ nameWithOwner }, _, { user }) => {
+    readme: async ({ nameWithOwner, url }, _, { user }) => {
       const [repoOwner, repoName] = nameWithOwner.split('/')
       try {
         const { data } = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/readme`, {
           headers: {
-            Accept: 'application/vnd.github.VERSION.html',
+            Accept: 'application/vnd.github.VERSION.raw',
             Authorization: `Bearer ${user.token}`
           }
         })
-        return data
+        return md(data, {
+          repository: {
+            type: 'git',
+            url
+          }
+        })
       } catch (e) {
         return null
       }

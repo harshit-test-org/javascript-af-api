@@ -7,7 +7,8 @@
     "dev": "nodemon --exec babel-node src/start.js",
     "build": "babel src/ -d dist/",
     "prebuild": "rm -rf dist/",
-    "format": "prettier --trailing-comma es5 --no-semi --single-quote --write \"src/**/*.js\"",
+    "format":
+      "prettier --trailing-comma es5 --no-semi --single-quote --write \"src/**/*.js\"",
     "precommit": "lint-staged && mocha",
     "test": "mocha "
   },
@@ -19,21 +20,17 @@
     "cors": "^2.8.4",
     "date-fns": "^1.29.0",
     "dotenv": "^5.0.0",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-prettier": "^2.6.0",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "graphql": "^0.13.0",
     "graphql-redis-subscriptions": "^1.4.0",
     "graphql-subscriptions": "^0.5.7",
     "graphql-tools": "^2.21.0",
-    "highlight.js": "^9.12.0",
-    "marked": "^0.3.19",
+    "marky-markdown": "^12.0.0",
     "merge-graphql-schemas": "^1.4.0",
     "mongoose": "^5.0.4",
     "morgan": "^1.9.0",
-    "subscriptions-transport-ws": "^0.9.5",
-    "xss": "^0.3.7"
+    "subscriptions-transport-ws": "^0.9.5"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -42,8 +39,10 @@
     "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
     "eslint": "^4.17.0",
+    "eslint-plugin-prettier": "^2.6.0",
     "eslint-config-standard": "^11.0.0-beta.0",
     "eslint-plugin-import": "^2.2.0",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-node": "^6.0.0",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.0",
@@ -56,9 +55,6 @@
   },
   "license": "MIT",
   "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
+    "*.js": ["eslint --fix", "git add"]
   }
 }
