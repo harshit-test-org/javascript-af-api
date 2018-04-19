@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { distanceInWordsToNow } from 'date-fns'
 import gitql from '../lib/graphql'
 import axios from 'axios'
 import md from '../lib/markdown'
@@ -88,7 +89,9 @@ export default {
           : null,
         homepage: repository.homepage || null,
         prs: repository.pullRequests.totalCount,
-        pushedAt: repository.pushedAt
+        pushedAt: distanceInWordsToNow(repository.pushedAt, {
+          addSuffix: true
+        })
       }
     }
   },
