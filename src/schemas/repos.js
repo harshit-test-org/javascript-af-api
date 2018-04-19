@@ -1,21 +1,35 @@
 export default `
   type Query {
-    getRepos(page:Int): [Repo!]
+    getRepos(page:Int): [RepoPreview!]
     getRepo(id:ID!): Repo!
   }
   type Mutation {
     createRepository(name:String!, nameWithOwner: String!, description: String!): Repo!
   }
-  type Repo {
-    owner: User!
-    readme: String
-    name: String!
-    nameWithOwner: String
-    url: String
-    image: String
+  type RepoPreview{
     _id: ID
+    url: String
+    nameWithOwner: String
+    name: String!
+    owner: User!
     description: String
+    posted: String
+  }
+  type Repo{
+    _id: ID
+    url: String
+    nameWithOwner: String
+    name: String!
+    owner: User!
+    description: String
+    readme: String
     starCount: Int
     posted: String
+    issues: Int
+    license: String
+    homepage: String
+    prs: Int
+    pushedAt: String
+    activity: [Int]
   }
 `

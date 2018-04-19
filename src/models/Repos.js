@@ -16,7 +16,10 @@ const RepoSchema = new Schema(
     }
   },
   {
-    timestamps: true
+    timestamps: true,
+    toJSON: {
+      virtuals: true
+    }
   }
 )
 
@@ -28,11 +31,6 @@ RepoSchema.virtual('posted').get(function() {
   return distanceInWordsToNow(this.createdAt, {
     addSuffix: true
   })
-})
-RepoSchema.virtual('image').get(function() {
-  if (this.imageURL) {
-    return this.imageURL + '&s=50'
-  }
 })
 
 mongoose.model('Repo', RepoSchema)

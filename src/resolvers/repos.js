@@ -25,6 +25,19 @@ export default {
       } catch (e) {
         return null
       }
+    },
+    activity: async ({ nameWithOwner, url }, _, { user }) => {
+      const [repoOwner, repoName] = nameWithOwner.split('/')
+      try {
+        const { data } = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/stats/participation`, {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        })
+        return data.all
+      } catch (e) {
+        return null
+      }
     }
   },
   Query: {
@@ -38,9 +51,45 @@ export default {
 
       return repos
     },
-    getRepo: async (_, { id }) => {
-      const data = await Repos.findById(id)
-      return data
+    getRepo: async (_, { id }, { user }) => {
+      const dbData = await Repos.findById(id)
+      const [repoOwner, repoName] = dbData.nameWithOwner.split('/')
+      const { data: { data: { repository } } } = await gitql({
+        query: `
+        {
+          repository(owner: "${repoOwner}", name: "${repoName}") {
+            pushedAt
+            issues(states: OPEN) {
+              totalCount
+            }
+            pullRequests(states: OPEN) {
+              totalCount
+            }
+            homepageUrl
+            stargazers {
+              totalCount
+            }
+            licenseInfo {
+              name
+              nickname
+            }
+          }
+        }
+
+        `,
+        headers: { Authorization: `Bearer ${user.token}` }
+      })
+      return {
+        ...dbData.toJSON(),
+        starCount: repository.stargazers.totalCount,
+        issues: repository.issues.totalCount,
+        license: repository.licenseInfo
+          ? repository.licenseInfo.nickname ? repository.licenseInfo.nickname : repository.licenseInfo.name
+          : null,
+        homepage: repository.homepage || null,
+        prs: repository.pullRequests.totalCount,
+        pushedAt: repository.pushedAt
+      }
     }
   },
   Mutation: {
