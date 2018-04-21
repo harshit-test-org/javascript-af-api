@@ -87,7 +87,7 @@ export default {
         license: repository.licenseInfo
           ? repository.licenseInfo.nickname ? repository.licenseInfo.nickname : repository.licenseInfo.name
           : null,
-        homepage: repository.homepage || null,
+        homepage: repository.homepageUrl,
         prs: repository.pullRequests.totalCount,
         pushedAt: distanceInWordsToNow(repository.pushedAt, {
           addSuffix: true
