@@ -97,6 +97,9 @@ export default {
   },
   Mutation: {
     createRepository: async (_, { name, nameWithOwner, description }, { user }) => {
+      if (!nameWithOwner) {
+        throw new Error('No namewithowner provided')
+      }
       const [repoOwner, repoName] = nameWithOwner.split('/')
       const { data: { data: { repository } } } = await gitql({
         query: `

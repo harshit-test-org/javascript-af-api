@@ -5,7 +5,6 @@ import graphql from '../lib/graphql'
 import client from '../algolia'
 
 const User = mongoose.model('User')
-const Repo = mongoose.model('Repo')
 
 const router = express.Router()
 
@@ -63,16 +62,8 @@ router.get('/callback', (req, res) => {
           query: `
               {
                 viewer {
-                  pinnedRepositories(first: 6) {
-                    edges {
-                      node {
-                        name
-                        url
-                        description
-                      }
-                    }
-                  }
                   name
+                  username
                   bio
                   avatarUrl
                 }
@@ -83,21 +74,16 @@ router.get('/callback', (req, res) => {
           }
         })
         const newUser = await User.create({
-          name: info.data.viewer.name,
+          name: info.data.viewer.name || info.data.viewer.username,
+          username: info.data.viewer.username,
           bio: info.data.viewer.bio,
           photoURL: info.data.viewer.avatarUrl,
           token,
           email: userInfo[0].email
         })
-        const userRepos = info.data.viewer.pinnedRepositories.edges.map(item => ({
-          name: item.node.name,
-          description: item.node.description,
-          imageURL: info.data.viewer.avatarUrl,
-          owner: newUser._id
-        }))
-        await Repo.insertMany(userRepos)
         index.saveObject({
           name: newUser.name,
+          username: info.data.viewer.username,
           bio: newUser.bio,
           photoURL: newUser.photoURL,
           email: newUser.email,
