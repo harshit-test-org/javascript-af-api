@@ -3,9 +3,10 @@ import { distanceInWordsToNow } from 'date-fns'
 import gitql from '../lib/graphql'
 import axios from 'axios'
 import md from '../lib/markdown'
+import client from '../algolia'
 
 const Repos = mongoose.model('Repo')
-
+const index = client.initIndex('repos')
 export default {
   Repo: {
     readme: async ({ nameWithOwner, url }, _, { user }) => {
@@ -124,7 +125,6 @@ export default {
         nameWithOwner,
         owner: user._id,
         url: repository.url,
-        starCount: repository.stargazers.totalCount,
         description
       }
       let newRepo = await Repos.create(repoData)
@@ -135,6 +135,13 @@ export default {
         name: user.name,
         bio: user.bio
       }
+      index.saveObject({
+        name,
+        nameWithOwner,
+        url: repository.url,
+        description,
+        objectID: newRepo._id
+      })
       return newRepo
     }
   }
