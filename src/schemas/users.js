@@ -9,6 +9,6 @@ export default `
     username: String!,
     name: String!,
     photoURL: String!,
-    bio: String!
+    bio: String
   }
 `
