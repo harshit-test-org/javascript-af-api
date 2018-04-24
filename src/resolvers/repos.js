@@ -53,10 +53,9 @@ export default {
 
       return repos
     },
-    getReposByUser: async (obj, args, context) => {
-      console.log('args: ', args)
-
-      return 'testing'
+    getReposByUser: async (_, { id }, context) => {
+      const result = await Repos.find({ owner: { _id: id } })
+      return result
     },
     getRepo: async (_, { id }, { user }) => {
       const dbData = await Repos.findById(id)

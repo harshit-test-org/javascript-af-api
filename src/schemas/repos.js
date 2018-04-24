@@ -2,7 +2,7 @@ export default `
   type Query {
     getRepos(page:Int): [RepoPreview!]
     getRepo(id:ID!): Repo!
-    getReposByUser(id:ID!): String
+    getReposByUser(id:ID!): [RepoPreview!]
   }
   type Mutation {
     createRepository(name:String!, nameWithOwner: String!, description: String!): Repo!
