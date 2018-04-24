@@ -53,10 +53,18 @@ export default {
 
       return repos
     },
+    getReposByUser: async (_, { id }, context) => {
+      const result = await Repos.find({ owner: { _id: id } })
+      return result
+    },
     getRepo: async (_, { id }, { user }) => {
       const dbData = await Repos.findById(id)
       const [repoOwner, repoName] = dbData.nameWithOwner.split('/')
-      const { data: { data: { repository } } } = await gitql({
+      const {
+        data: {
+          data: { repository }
+        }
+      } = await gitql({
         query: `
         {
           repository(owner: "${repoOwner}", name: "${repoName}") {
@@ -86,7 +94,9 @@ export default {
         starCount: repository.stargazers.totalCount,
         issues: repository.issues.totalCount,
         license: repository.licenseInfo
-          ? repository.licenseInfo.nickname ? repository.licenseInfo.nickname : repository.licenseInfo.name
+          ? repository.licenseInfo.nickname
+            ? repository.licenseInfo.nickname
+            : repository.licenseInfo.name
           : null,
         homepage: repository.homepageUrl,
         prs: repository.pullRequests.totalCount,
@@ -102,7 +112,11 @@ export default {
         throw new Error('No namewithowner provided')
       }
       const [repoOwner, repoName] = nameWithOwner.split('/')
-      const { data: { data: { repository } } } = await gitql({
+      const {
+        data: {
+          data: { repository }
+        }
+      } = await gitql({
         query: `
         {
           repository(name: "${repoName}", owner: "${repoOwner}") {
