@@ -6,7 +6,8 @@ const UserSchema = new mongoose.Schema({
   username: String,
   name: String,
   photoURL: String,
-  bio: String
+  bio: String,
+  githubURL: String
 })
 
 mongoose.model('User', UserSchema)

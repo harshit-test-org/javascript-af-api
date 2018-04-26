@@ -44,5 +44,13 @@ export default {
         _id: item.id
       }))
     }
+  },
+  User: {
+    githubURL: ({ username }) => {
+      return `https://www.github.com/${username}`
+    },
+    username: ({ username, name }) => {
+      return username || name.replace(/\s+/g, '')
+    }
   }
 }
