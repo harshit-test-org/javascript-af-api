@@ -99,8 +99,7 @@ app.get(
   '/api/graphiql',
   graphiqlExpress({
     endpointURL: '/api/graphql',
-    subscriptionsEndpoint: `ws://localhost:8080/api/subscriptions`,
-    editorTheme: 'material'
+    subscriptionsEndpoint: `ws://localhost:8080/api/subscriptions`
   })
 )
 

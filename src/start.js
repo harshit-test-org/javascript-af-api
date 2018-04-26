@@ -63,4 +63,5 @@ server.listen(PORT, () => {
   )
 
   console.log('APP started on PORT : ' + PORT)
+  console.log(`GraphiQL available at http://localhost:${PORT}/api/graphiql`)
 })
