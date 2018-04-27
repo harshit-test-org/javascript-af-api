@@ -62,20 +62,20 @@ router.get('/callback', (req, res) => {
           query: `
               {
                 viewer {
+                  login
                   name
-                  username
                   bio
                   avatarUrl
                 }
               }
               `,
           headers: {
-            Authorization: `bearer ${token}`
+            Authorization: `Bearer ${token}`
           }
         })
         const newUser = await User.create({
           name: info.data.viewer.name || info.data.viewer.username,
-          username: info.data.viewer.username,
+          username: info.data.viewer.login,
           bio: info.data.viewer.bio,
           photoURL: info.data.viewer.avatarUrl,
           token,
