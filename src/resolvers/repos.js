@@ -152,8 +152,8 @@ export default {
       index.saveObject({
         name,
         nameWithOwner,
-        url: repository.url,
         description,
+        photoURL: user.photoURL,
         objectID: newRepo._id
       })
       return newRepo
