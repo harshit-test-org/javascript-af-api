@@ -2,7 +2,7 @@ export default `
   type Query{
     getAllUsers: [User],
     getUserById(id:ID!): User!
-    getUserGithubRepos: [Repo!]
+    getUserGithubRepos(page:Int): [Repo!]
   },
   type User {
     _id: String!,

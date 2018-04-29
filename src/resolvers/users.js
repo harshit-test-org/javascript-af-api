@@ -9,12 +9,14 @@ export default {
       const user = await User.findOne({ _id: id })
       return user
     },
-    getUserGithubRepos: async (_, args, { user }) => {
+    getUserGithubRepos: async (_, { page }, { user }) => {
+      const first = page * 10 || '10'
+      console.log(first)
       const { data: repos } = await graphql({
         query: `
             {
               viewer {
-                repositories(orderBy: {field: STARGAZERS, direction: DESC},first:10) {
+                repositories(orderBy: {field: STARGAZERS, direction: DESC},first:${first}) {
                     nodes {
                       name
                       nameWithOwner
@@ -33,7 +35,7 @@ export default {
           Authorization: `bearer ${user.token}`
         }
       })
-      return repos.data.viewer.repositories.nodes.map(item => ({
+      return repos.data.viewer.repositories.nodes.slice(first - 10).map(item => ({
         owner: user,
         name: item.name,
         url: item.url,
