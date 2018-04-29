@@ -54,7 +54,9 @@ export default {
       return repos
     },
     getReposByUser: async (_, { id }, context) => {
-      const result = await Repos.find({ owner: { _id: id } })
+      const result = await Repos.find({ owner: { _id: id } }).sort({
+        createdAt: 'desc'
+      })
       return result
     },
     getRepo: async (_, { id }, { user }) => {
