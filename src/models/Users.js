@@ -5,7 +5,8 @@ const UserSchema = new mongoose.Schema({
     type: String,
     unique: true,
     lowercase: true,
-    trim: true
+    trim: true,
+    index: true
   },
   token: { type: String, required: 'Github auth token must not be null' },
   username: {
