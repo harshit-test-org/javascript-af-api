@@ -143,22 +143,28 @@ export default {
         url: repository.url,
         description
       }
-      let newRepo = await Repos.create(repoData)
-      newRepo = newRepo.toObject()
-      newRepo.owner = {
-        _id: user._id,
-        photoURL: user.photoURL,
-        name: user.name,
-        bio: user.bio
+      try {
+        let newRepo = await Repos.create(repoData)
+        newRepo = newRepo.toObject()
+        newRepo.owner = {
+          _id: user._id,
+          photoURL: user.photoURL,
+          name: user.name,
+          bio: user.bio
+        }
+        index.saveObject({
+          name,
+          nameWithOwner,
+          description,
+          photoURL: user.photoURL,
+          objectID: newRepo._id
+        })
+        return newRepo
+      } catch (e) {
+        if (e.code === 11000) {
+          throw new Error('Repository already exists')
+        } else throw e
       }
-      index.saveObject({
-        name,
-        nameWithOwner,
-        description,
-        photoURL: user.photoURL,
-        objectID: newRepo._id
-      })
-      return newRepo
     }
   }
 }
