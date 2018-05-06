@@ -65,10 +65,15 @@ export default {
 
       return repos
     },
-    getReposByUser: async (_, { id }, context) => {
-      const result = await Repos.find({ owner: { _id: id } }).sort({
-        createdAt: 'desc'
-      })
+    getReposByUser: async (_, { id, page = 1 }, context) => {
+      const limit = 10
+      const skip = page * limit - limit
+      const result = await Repos.find({ owner: { _id: id } })
+        .skip(skip)
+        .limit(limit)
+        .sort({
+          createdAt: 'desc'
+        })
       return result
     },
     getRepo: async (_, { id }, { user }) => {

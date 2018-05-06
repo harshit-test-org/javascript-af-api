@@ -2,7 +2,7 @@ export default `
   type Query {
     getRepos(page:Int): [RepoPreview!]
     getRepo(id:ID!): Repo!
-    getReposByUser(id:ID!): [RepoPreview!]
+    getReposByUser(id:ID!, page: Int): [RepoPreview!]
     getEditorsChoiceRepos(page:Int): [RepoPreview!]
   }
   type Mutation {
