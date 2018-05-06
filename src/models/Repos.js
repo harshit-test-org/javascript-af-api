@@ -27,7 +27,8 @@ const RepoSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: 'Repository should have an owner'
-    }
+    },
+    eChoice: Boolean
   },
   {
     timestamps: true,

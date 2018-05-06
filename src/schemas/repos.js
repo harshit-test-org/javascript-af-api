@@ -3,6 +3,7 @@ export default `
     getRepos(page:Int): [RepoPreview!]
     getRepo(id:ID!): Repo!
     getReposByUser(id:ID!): [RepoPreview!]
+    getEditorsChoiceRepos(page:Int): [RepoPreview!]
   }
   type Mutation {
     createRepository(name:String!, nameWithOwner: String!, description: String!): Repo!

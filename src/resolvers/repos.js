@@ -53,6 +53,18 @@ export default {
 
       return repos
     },
+    getEditorsChoiceRepos: async (_, { page = 1 }) => {
+      const limit = 25
+      const skip = page * limit - limit
+      const repos = await Repos.find({
+        eChoice: true
+      })
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: 'desc' })
+
+      return repos
+    },
     getReposByUser: async (_, { id }, context) => {
       const result = await Repos.find({ owner: { _id: id } }).sort({
         createdAt: 'desc'
