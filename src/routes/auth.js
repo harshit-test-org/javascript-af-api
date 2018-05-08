@@ -74,7 +74,7 @@ router.get('/callback', (req, res) => {
           }
         })
         const newUser = await User.create({
-          name: info.data.viewer.name || info.data.viewer.username,
+          name: info.data.viewer.name || info.data.viewer.login,
           username: info.data.viewer.login,
           bio: info.data.viewer.bio,
           photoURL: info.data.viewer.avatarUrl,

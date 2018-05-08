@@ -5,7 +5,6 @@
   "now": {
     "name": "jsapi",
     "alias": "jsapi",
-    "public": true,
     "dotenv": ".env.now"
   },
   "scripts": {
@@ -13,7 +12,7 @@
     "dev": "nodemon --exec babel-node src/start.js",
     "build": "babel src/ -d dist/ --source-maps",
     "prebuild": "rm -rf dist/",
-    "deploy": "now --regions bru1 && now alias",
+    "deploy": "now && now alias",
     "format": "prettier --trailing-comma es5 --no-semi --single-quote --write \"src/**/*.js\"",
     "precommit": "lint-staged && mocha",
     "test": "mocha "
